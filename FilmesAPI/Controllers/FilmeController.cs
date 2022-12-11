@@ -20,7 +20,14 @@ namespace FilmesAPI.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Adiciona um filme ao banco de dados
+        /// </summary>
+        /// <param name="filmeDto">Objeto com os campos necessários para criação de um filme</param>
+        /// <returns>IActionresult</returns>
+        /// <response code="201">Caso inserção seja feita com sucesso</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public IActionResult AdicionaFilme([FromBody] CreateFilmeDto filmeDto)
         {
             var filme = _mapper.Map<Filme>(filmeDto);
