@@ -3,6 +3,7 @@ using System;
 using FilmesAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FilmesAPI.Migrations
 {
     [DbContext(typeof(FilmeContext))]
-    partial class FilmeContextModelSnapshot : ModelSnapshot
+    [Migration("20230204212525_Sessao e Filme")]
+    partial class SessaoeFilme
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,21 +89,19 @@ namespace FilmesAPI.Migrations
 
             modelBuilder.Entity("FilmesAPI.Domain.Models.Sessao", b =>
                 {
-                    b.Property<int?>("FilmeId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<int?>("CinemaId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DataHoraFinal")
-                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("DataHoraInicio")
                         .HasColumnType("datetime(6)");
 
-                    b.HasKey("FilmeId", "CinemaId");
+                    b.Property<int>("FilmeId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("CinemaId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("FilmeId");
 
                     b.ToTable("Sessoes");
                 });
@@ -111,7 +111,7 @@ namespace FilmesAPI.Migrations
                     b.HasOne("FilmesAPI.Domain.Models.Endereco", "Endereco")
                         .WithOne("Cinema")
                         .HasForeignKey("FilmesAPI.Domain.Models.Cinema", "EnderecoId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Endereco");
@@ -119,26 +119,13 @@ namespace FilmesAPI.Migrations
 
             modelBuilder.Entity("FilmesAPI.Domain.Models.Sessao", b =>
                 {
-                    b.HasOne("FilmesAPI.Domain.Models.Cinema", "Cinema")
-                        .WithMany("Sessoes")
-                        .HasForeignKey("CinemaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FilmesAPI.Domain.Models.Filme", "Filme")
                         .WithMany("Sessoes")
                         .HasForeignKey("FilmeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Cinema");
-
                     b.Navigation("Filme");
-                });
-
-            modelBuilder.Entity("FilmesAPI.Domain.Models.Cinema", b =>
-                {
-                    b.Navigation("Sessoes");
                 });
 
             modelBuilder.Entity("FilmesAPI.Domain.Models.Endereco", b =>

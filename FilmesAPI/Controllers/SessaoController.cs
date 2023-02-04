@@ -34,7 +34,7 @@ namespace SessoesAPI.Controllers
             _context.Sessoes.Add(sessao);
             _context.SaveChanges();
 
-            return CreatedAtAction(nameof(RecuperaSessaoPorId), new { id = sessao.Id }, sessaoDto);
+            return CreatedAtAction(nameof(RecuperaSessaoPorId), new { filmeId = sessao.FilmeId, cinemaId = sessao.CinemaId}, sessaoDto);
         }
 
         /// <summary>
@@ -48,10 +48,11 @@ namespace SessoesAPI.Controllers
             return _mapper.Map<List<ReadSessaoDto>>(_context.Sessoes.ToList());
         }
 
-        [HttpGet("{id}")]
-        public IActionResult RecuperaSessaoPorId(int id)
+        [HttpGet("{filmeId}/{cinemaId}")]
+        public IActionResult RecuperaSessaoPorId(int filmeId, int cinemaId)
         {
-            var sessao = _context.Sessoes.FirstOrDefault(f => f.Id == id);
+            var sessao = _context.Sessoes.FirstOrDefault(s => s.FilmeId == filmeId &&
+                                                              s.CinemaId == cinemaId);
 
             if (sessao == null)
                 return NotFound();
@@ -61,10 +62,11 @@ namespace SessoesAPI.Controllers
             return Ok(sessaoDto);
         }
 
-        [HttpPut("{id}")]
-        public IActionResult AtualizaSessao(int id, [FromBody] UpdateSessaoDto sessaoDto)
+        [HttpPut("{filmeId}/{cinemaId}")]
+        public IActionResult AtualizaSessao(int filmeId, int cinemaId, [FromBody] UpdateSessaoDto sessaoDto)
         {
-            var sessao = _context.Sessoes.FirstOrDefault(f => f.Id == id);
+            var sessao = _context.Sessoes.FirstOrDefault(s => s.FilmeId == filmeId &&
+                                                              s.CinemaId == cinemaId);
 
             if (sessao == null)
                 return NotFound();
@@ -75,10 +77,11 @@ namespace SessoesAPI.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
-        public IActionResult AtualizaSessaoParcial(int id, JsonPatchDocument<UpdateSessaoDto> patch)
+        [HttpPatch("{filmeId}/{cinemaId}")]
+        public IActionResult AtualizaSessaoParcial(int filmeId, int cinemaId, JsonPatchDocument<UpdateSessaoDto> patch)
         {
-            var sessao = _context.Sessoes.FirstOrDefault(f => f.Id == id);
+            var sessao = _context.Sessoes.FirstOrDefault(s => s.FilmeId == filmeId &&
+                                                              s.CinemaId == cinemaId);
 
             if (sessao == null)
                 return NotFound();
@@ -95,10 +98,11 @@ namespace SessoesAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult DeletaSessao(int id)
+        [HttpDelete("{filmeId}/{cinemaId}")]
+        public IActionResult DeletaSessao(int filmeId, int cinemaId)
         {
-            var sessao = _context.Sessoes.FirstOrDefault(f => f.Id == id);
+            var sessao = _context.Sessoes.FirstOrDefault(s => s.FilmeId == filmeId &&
+                                                              s.CinemaId == cinemaId);
 
             if (sessao == null)
                 return NotFound();
