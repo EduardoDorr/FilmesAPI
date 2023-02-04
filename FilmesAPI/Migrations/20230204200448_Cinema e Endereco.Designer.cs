@@ -2,6 +2,7 @@
 using FilmesAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FilmesAPI.Migrations
 {
     [DbContext(typeof(FilmeContext))]
-    partial class FilmeContextModelSnapshot : ModelSnapshot
+    [Migration("20230204200448_Cinema e Endereco")]
+    partial class CinemaeEndereco
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,7 +26,7 @@ namespace FilmesAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("EnderecoId")
+                    b.Property<int>("Enderecoid")
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
@@ -33,7 +35,7 @@ namespace FilmesAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EnderecoId")
+                    b.HasIndex("Enderecoid")
                         .IsUnique();
 
                     b.ToTable("Cinemas");
@@ -88,7 +90,7 @@ namespace FilmesAPI.Migrations
                 {
                     b.HasOne("FilmesAPI.Domain.Models.Endereco", "Endereco")
                         .WithOne("Cinema")
-                        .HasForeignKey("FilmesAPI.Domain.Models.Cinema", "EnderecoId")
+                        .HasForeignKey("FilmesAPI.Domain.Models.Cinema", "Enderecoid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.JsonPatch;
 using AutoMapper;
 using FilmesAPI.Data;
-using FilmesAPI.Models;
 using FilmesAPI.Data.Dtos;
-using Microsoft.AspNetCore.JsonPatch;
+using FilmesAPI.Domain.Models;
 
 namespace FilmesAPI.Controllers
 {
@@ -34,9 +34,16 @@ namespace FilmesAPI.Controllers
             _context.Filmes.Add(filme);
             _context.SaveChanges();
 
-            return CreatedAtAction(nameof(RecuperaFilmePorId), new { id = filme.Id }, filme);
+            return CreatedAtAction(nameof(RecuperaFilmePorId), new { id = filme.Id }, filmeDto);
         }
 
+        /// <summary>
+        /// Recupera todos os filmes do banco de dados
+        /// </summary>
+        /// <param name="skip">Seleciona quantos filmes serão pulados do início da listagem</param>
+        /// <param name="take">Seleciona quantos filmes serão recuperados da listagem</param>
+        /// <returns>IActionresult</returns>
+        /// <response code="200">Sucesso</response>
         [HttpGet]
         public IEnumerable<ReadFilmeDto> RecuperaFilmes([FromQuery] int skip = 0, [FromQuery] int take = 50)
         {

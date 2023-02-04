@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
-using FilmesAPI.Models;
 using FilmesAPI.Data.Dtos;
+using FilmesAPI.Domain.Models;
 
-namespace FilmesAPI.Profiles
+namespace FilmesAPI.Domain.Profiles
 {
     public class FilmeProfile : Profile
     {
         public FilmeProfile()
         {
-            CreateMap<CreateFilmeDto, Filme>();
+            _ = CreateMap<CreateFilmeDto, Filme>();
             CreateMap<UpdateFilmeDto, Filme>();
             CreateMap<Filme, UpdateFilmeDto>();
             CreateMap<Filme, ReadFilmeDto>();
