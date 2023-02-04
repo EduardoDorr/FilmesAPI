@@ -45,9 +45,19 @@ namespace FilmesAPI.Controllers
         /// <returns>IActionresult</returns>
         /// <response code="200">Sucesso</response>
         [HttpGet]
-        public IEnumerable<ReadFilmeDto> RecuperaFilmes([FromQuery] int skip = 0, [FromQuery] int take = 50)
+        public IEnumerable<ReadFilmeDto> RecuperaFilmes([FromQuery] int skip = 0,
+                                                        [FromQuery] int take = 50,
+                                                        [FromQuery] string? cinema = null)
         {
-            return _mapper.Map<IEnumerable<ReadFilmeDto>>(_context.Filmes.Skip(skip).Take(take).ToList());
+            if (cinema == null)
+            {
+                return _mapper.Map<IEnumerable<ReadFilmeDto>>(_context.Filmes.Skip(skip).Take(take).ToList());
+            }
+
+            return _mapper.Map<IEnumerable<ReadFilmeDto>>(_context.Filmes.Skip(skip)
+                                                                         .Take(take)
+                                                                         .Where(f => f.Sessoes.Any(s => s.Cinema.Nome == cinema))
+                                                                         .ToList());
         }
 
         [HttpGet("{id}")]
